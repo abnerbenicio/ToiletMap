@@ -38,7 +38,7 @@ O ToiletMap é um aplicativo colaborativo que permite aos usuários encontrar e 
         <img src="https://avatars.githubusercontent.com/u/136522676?v=4" width="100px;" alt="Foto do João Marcos"/><br>
         <sub>
           <b>João Marcos Pimentel</b><br>
-          <b>trabalhos.jmr25@gmail.com</b>
+          <b>joaomarcos@tutanota.de</b>
         </sub>
       </a>
     </td>
