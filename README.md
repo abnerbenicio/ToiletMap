@@ -1,50 +1,82 @@
-# Welcome to your Expo app 👋
+<h1 align="center">ToiletMap 🚽</h1>
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## :memo: Descrição
+O ToiletMap é um aplicativo colaborativo que permite aos usuários encontrar e avaliar banheiros próximos. Com ele, é possível ajudar e ser ajudado pela comunidade á encontrar o melhor banheiro e mais perto de você!
 
-## Get started
+## :handshake: Colaboradores
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/AbnerBenicio">
+        <img src="https://avatars.githubusercontent.com/u/112874576?v=4" width="100px;" alt="Foto de Abner Benicio"/><br>
+        <sub>
+          <b>Abner Benicio</b><br>
+          <b>abnerbeniciosilva123@gmail.com</b>
+        </sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/ArthurCremasco">
+        <img src="https://avatars.githubusercontent.com/u/148019842?v=4" width="100px;" alt="Foto de Arthur Cremasco"/><br>
+        <sub>
+          <b>Arthur Cremasco</b><br>
+          <b>arthurcremascoamaral7@gmail.com</b>
+        </sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/filipeabmoura">
+        <img src="https://avatars.githubusercontent.com/u/108959212?v=4" width="100px;" alt="Foto de Filipe Moura"/><br>
+        <sub>
+          <b>Filipe Moura</b><br>
+          <b>filipemoura.pessoal@gmail.com</b>
+        </sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/filipeabmoura">
+        <img src="https://avatars.githubusercontent.com/u/136522676?v=4" width="100px;" alt="Foto do João Marcos"/><br>
+        <sub>
+          <b>João Marcos Pimentel</b><br>
+          <b>joaomarcos@tutanota.de</b>
+        </sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/filipeabmoura">
+        <img src="https://avatars.githubusercontent.com/u/57851959?v=4" width="100px;" alt="Foto do Vinícius Caetano"/><br>
+        <sub>
+          <b>Vinícius Caetano</b><br>
+          <b>viniciusgcaetano@hotmail.com</b>
+        </sub>
+      </a>
+    </td>
+    
+  </tr>
+</table>
 
-1. Install dependencies
+## Como Executar o Projeto? ⚙️
+
+1. Instalação de Dependências
 
    ```bash
    npm install
    ```
 
-2. Start the app
+2. Rodar a Aplicação
 
    ```bash
     npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+No terminal, você verá opções para:
 
 - [development build](https://docs.expo.dev/develop/development-builds/introduction/)
 - [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
 - [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- [Expo Go](https://expo.dev/go)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Links Úteis 🔗
+- <a href="https://docs.google.com/document/d/1KoodP2aLMj5Eqa80PaGcFQ0cO-Qmzx-W/edit?usp=sharing&ouid=101254861131254864524&rtpof=true&sd=true">Documentação 📖</a>
+- <a href="https://docs.google.com/spreadsheets/d/1xnMJiFN5WQCy3NvAvdmGhv9jmTkYpxGy/edit?usp=sharing&ouid=101254861131254864524&rtpof=true&sd=true">Backlog 🧮</a>
+- <a href="https://app.quant-ux.com/#/test.html?h=a2aa10abBr5a0XGDb2HvLDoouyK0uwTcihZjpj9lzzRGkkIcy87Ma8cRpZvG&ln=en">Protótipo 📱</a>
