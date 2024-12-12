@@ -34,6 +34,16 @@ export default function RootLayout() {
           },
         }}
       />
+      <Tabs.Screen
+        name="ReviewForm"
+        options={{
+          title: "Avaliar Banheiro",
+          headerTitle: "ToiletMap",
+          tabBarIcon: ({}) => {
+            return <FontAwesome name="home" size={30} color="#fff" />;
+          },
+        }}
+      />
     </Tabs>
   );
 }
