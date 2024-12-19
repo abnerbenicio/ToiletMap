@@ -31,11 +31,12 @@ jobs:
           npm install -g eas-cli  # Instalar o eas-cli globalmente
           npm install  # Instalar as dependências do projeto
 
-      # Autenticar no Expo usando token
+      # Autenticar no Expo usando o token de autenticação
       - name: Authenticate with Expo
         env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        run: npx eas-cli whoami
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}  # Usar o token de autenticação
+        run: |
+          eas login --token $EXPO_TOKEN
 
       # Rodar o EAS Build
       - name: Run EAS Build
