@@ -40,7 +40,7 @@ jobs:
 
       # Rodar o EAS Build
       - name: Run EAS Build
-        run: eas build --platform android --profile preview
+        run: eas build --platform android --profile preview --no-interactive
 
       # Fazer upload do APK gerado como artefato no GitHub Actions
       - name: Upload APK
