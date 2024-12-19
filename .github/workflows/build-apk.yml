@@ -15,10 +15,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Instalar Node.js via NPM sem especificar versão fixa
+      # Instalar Node.js na versão 23.x
       - name: Install Node.js
         run: |
-          curl -fsSL https://deb.nodesource.com/setup_current.x | sudo -E bash -
+          curl -fsSL https://deb.nodesource.com/setup_23.x | sudo -E bash - # Instalar a versão 23.x do Node.js
           sudo apt-get install -y nodejs
 
       # Verificar a versão instalada do Node.js (opcional)
