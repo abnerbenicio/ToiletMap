@@ -25,9 +25,11 @@ jobs:
       - name: Check Node.js Version
         run: node -v
 
-      # Instalar dependências (EAS CLI incluído se estiver no package.json)
+      # Instalar dependências (Instalando o EAS CLI globalmente)
       - name: Install Dependencies
-        run: npm ci
+        run: |
+          npm install -g eas-cli  # Instalar o eas-cli globalmente
+          npm install  # Instalar as dependências do projeto
 
       # Autenticar no Expo usando token
       - name: Authenticate with Expo
