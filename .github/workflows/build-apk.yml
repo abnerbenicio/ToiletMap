@@ -31,11 +31,16 @@ jobs:
           npm install -g eas-cli  # Instalar o eas-cli globalmente
           npm install  # Instalar as dependências do projeto
 
+      # Definir o token de autenticação como variável de ambiente
+      - name: Set Expo Token
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}  # Usar o token de autenticação
+        run: |
+          echo "EXPO_TOKEN=$EXPO_TOKEN" >> $GITHUB_ENV  # Definir como variável de ambiente no GitHub Actions
+
       # Rodar o EAS Build
       - name: Run EAS Build
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}  # Passar o token de autenticação diretamente como variável de ambiente
-        run: eas build --platform android --profile preview --no-interactive
+        run: eas build --platform android --profile preview --non-interactive
 
       # Fazer upload do APK gerado como artefato no GitHub Actions
       - name: Upload APK
