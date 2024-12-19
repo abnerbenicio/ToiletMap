@@ -21,21 +21,19 @@ jobs:
         with:
           node-version: 16
 
-      # Install dependencies
+      # Install dependencies (EAS CLI included if in package.json)
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
-      # Install EAS CLI globally
-      - name: Install EAS CLI
-        run: npm install --global eas-cli
-
-      # Authenticate with Expo
+      # Authenticate with Expo using token
       - name: Authenticate with Expo
-        run: eas login --username ${{ secrets.EXPO_USERNAME }} --password ${{ secrets.EXPO_PASSWORD }}
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: npx eas-cli whoami
 
       # Run the EAS build
       - name: Run EAS Build
-        run: eas build --platform android --profile preview
+        run: npx eas-cli build --platform android --profile preview
 
       # Upload the APK to GitHub Actions as an artifact
       - name: Upload APK
