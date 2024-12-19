@@ -15,27 +15,31 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Setup Node.js
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
+      # Instalar Node.js via NPM sem especificar versão fixa
+      - name: Install Node.js
+        run: |
+          curl -fsSL https://deb.nodesource.com/setup_current.x | sudo -E bash -
+          sudo apt-get install -y nodejs
 
-      # Install dependencies (EAS CLI included if in package.json)
+      # Verificar a versão instalada do Node.js (opcional)
+      - name: Check Node.js Version
+        run: node -v
+
+      # Instalar dependências (EAS CLI incluído se estiver no package.json)
       - name: Install Dependencies
         run: npm ci
 
-      # Authenticate with Expo using token
+      # Autenticar no Expo usando token
       - name: Authenticate with Expo
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: npx eas-cli whoami
 
-      # Run the EAS build
+      # Rodar o EAS Build
       - name: Run EAS Build
         run: npx eas-cli build --platform android --profile preview
 
-      # Upload the APK to GitHub Actions as an artifact
+      # Fazer upload do APK gerado como artefato no GitHub Actions
       - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
