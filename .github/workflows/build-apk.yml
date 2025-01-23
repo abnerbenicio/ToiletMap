@@ -44,7 +44,7 @@ jobs:
 
       # Fazer upload do APK gerado como artefato no GitHub Actions
       - name: Upload APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: app-preview.apk
           path: dist/*
