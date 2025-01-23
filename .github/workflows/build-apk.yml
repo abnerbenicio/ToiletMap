@@ -13,7 +13,7 @@ jobs:
     steps:
       # Check out the repository
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Instalar Node.js na versão 23.x
       - name: Install Node.js
@@ -44,7 +44,7 @@ jobs:
 
       # Fazer upload do APK gerado como artefato no GitHub Actions
       - name: Upload APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: app-preview.apk
           path: dist/*
