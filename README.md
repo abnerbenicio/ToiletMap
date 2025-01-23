@@ -10,7 +10,7 @@ O ToiletMap é um aplicativo colaborativo que permite aos usuários encontrar e 
       <a href="https://github.com/AbnerBenicio">
         <img src="https://avatars.githubusercontent.com/u/112874576?v=4" width="100px;" alt="Foto de Abner Benicio"/><br>
         <sub>
-          <b>Abner Benicio Silva</b><br>
+          <b>Abner Benicio</b><br>
           <b>abnerbeniciosilva123@gmail.com</b>
         </sub>
       </a>
