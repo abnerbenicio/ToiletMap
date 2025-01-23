@@ -20,7 +20,7 @@ export default function RootLayout() {
         },
         tabBarLabelStyle: {
           color: "#fff",
-          fontSize: 15,
+          fontSize: 13,
         },
       }}
     >
@@ -35,12 +35,22 @@ export default function RootLayout() {
         }}
       />
       <Tabs.Screen
-        name="ReviewForm"
+        name="MapPage"
         options={{
-          title: "Avaliar Banheiro",
+          title: "Encontrar Banheiro",
           headerTitle: "ToiletMap",
           tabBarIcon: ({}) => {
-            return <FontAwesome name="home" size={30} color="#fff" />;
+            return <FontAwesome name="map" size={30} color="#fff" />;
+          },
+        }}
+      />
+      <Tabs.Screen
+        name="ReviewForm"
+        options={{
+          title: "Avaliar",
+          headerTitle: "ToiletMap",
+          tabBarIcon: ({}) => {
+            return <FontAwesome name="pencil" size={30} color="#fff" />;
           },
         }}
       />
