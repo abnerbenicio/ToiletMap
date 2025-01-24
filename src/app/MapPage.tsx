@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Alert, ActivityIndicator } from "react-native";
 import MapView, { Marker, Polyline, Region } from "react-native-maps";
 import * as Location from "expo-location";
+import { PROVIDER_GOOGLE } from "react-native-maps";
 
 type Bathroom = {
   latitude: number;
@@ -124,6 +125,7 @@ const MapPage = () => {
           initialRegion={location}
           showsUserLocation
           showsMyLocationButton
+          provider={PROVIDER_GOOGLE}
         >
           {bathrooms.map((bathroom, index) => (
             <Marker
