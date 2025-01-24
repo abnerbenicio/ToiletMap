@@ -1,7 +1,7 @@
 <h1 align="center">ToiletMap 🚽</h1>
 
 ## :memo: Descrição
-O ToiletMap é um aplicativo colaborativo que permite aos usuários encontrar e avaliar banheiros próximos. Com ele, é possível ajudar e ser ajudado pela comunidade á encontrar o melhor banheiro e mais perto de você!
+O ToiletMap é um aplicativo colaborativo que permite aos usuários encontrar e avaliar banheiros próximos. Com ele, é possível ajudar e ser ajudado pela comunidade à encontrar o melhor banheiro e mais perto de você!
 
 ## :handshake: Colaboradores
 <table>
