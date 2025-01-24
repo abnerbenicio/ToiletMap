@@ -33,7 +33,19 @@
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
-    "plugins": ["expo-router", "expo-font"],
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": {
+            "ios": "Permissão para usar a localização.",
+            "android": "Permissão necessária para exibir o mapa."
+          }
+        }
+      ]
+    ],
     "experiments": {
       "typedRoutes": true
     },
