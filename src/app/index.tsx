@@ -1,7 +1,6 @@
 import { Text, View, Image, Alert, BackHandler } from "react-native";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import * as Location from "expo-location"; // Importação direta do módulo de localização
-import React from "react";
 
 export default function Index() {
 
