@@ -14,39 +14,65 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Install Node.js
-        run: |
-          curl -fsSL https://deb.nodesource.com/setup_23.x | sudo -E bash -
-          sudo apt-get install -y nodejs
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
 
       - name: Install Dependencies
         run: |
           npm install -g eas-cli
           npm install
 
-      - name: Install jq (for JSON processing)
+      - name: Install jq
         run: sudo apt-get install -y jq
 
-      - name: Set Expo Token
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        run: echo "EXPO_TOKEN=$EXPO_TOKEN" >> $GITHUB_ENV
-
-      - name: Run EAS Build and Extract Download URL
-        id: eas_build
+      - name: Run EAS Build
+        id: eas-build
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: |
-          BUILD_OUTPUT=$(eas build --platform android --profile preview --non-interactive --json)
-          echo "Build Output: $BUILD_OUTPUT"
-          DOWNLOAD_URL=$(echo $BUILD_OUTPUT | jq -r '.artifacts.buildUrl')
+          # Executar o build e capturar a saída JSON
+          BUILD_JSON=$(eas build --platform android --profile preview --non-interactive --json)
+          
+          # Extrair URL de download (formato correto para a nova versão do EAS)
+          DOWNLOAD_URL=$(echo $BUILD_JSON | jq -r '.[0].artifacts.buildUrl')
+          
+          # Verificar se o URL foi obtido com sucesso
+          if [ -z "$DOWNLOAD_URL" ]; then
+            echo "❌ Falha ao obter URL de download"
+            exit 1
+          fi
+          
+          # Exportar variáveis
           echo "DOWNLOAD_URL=$DOWNLOAD_URL" >> $GITHUB_ENV
+          echo "BUILD_STATUS=success" >> $GITHUB_ENV
 
-      - name: Notify Discord
+      - name: Notify Discord on Success
+        if: ${{ env.BUILD_STATUS == 'success' }}
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          DOWNLOAD_URL: ${{ env.DOWNLOAD_URL }}
         run: |
-          curl -X POST -H "Content-Type: application/json" -d '{
-            "content": "🚀 Build finalizado com sucesso! Baixe o APK aqui: '$DOWNLOAD_URL'"
-          }' $DISCORD_WEBHOOK_URL
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -d '{
+              "content": "🚀 Build finalizado com sucesso!",
+              "embeds": [{
+                "title": "Download APK",
+                "description": "[Clique aqui para baixar](${{ env.DOWNLOAD_URL }})",
+                "color": 5814783
+              }]
+            }' \
+            $DISCORD_WEBHOOK_URL
+
+      - name: Notify Discord on Failure
+        if: ${{ failure() }}
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -d '{
+              "content": "❌ **Falha no processo de build!** Verifique os logs do GitHub Actions."
+            }' \
+            $DISCORD_WEBHOOK_URL
