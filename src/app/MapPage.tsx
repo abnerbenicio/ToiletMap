@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Alert, ActivityIndicator } from "react-native";
-import MapView, { Marker, Polyline, Region } from "react-native-maps";
+import MapView, { Marker, Polyline, Region, PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
-import { PROVIDER_GOOGLE } from "react-native-maps";
 
 type Bathroom = {
+  id: string;
   latitude: number;
   longitude: number;
   name: string;
@@ -47,30 +47,35 @@ const MapPage = () => {
     // Simula dados de banheiros
     const data: Bathroom[] = [
       {
+        id: "1",
         latitude: latitude + 0.001,
         longitude: longitude + 0.001,
         name: "Banheiro 1",
         description: "Banheiro próximo ao ponto A",
       },
       {
+        id: "2",
         latitude: latitude + 0.003,
         longitude: longitude - 0.002,
         name: "Banheiro 2",
         description: "Banheiro próximo ao ponto B",
       },
       {
+        id: "3",
         latitude: latitude - 0.002,
         longitude: longitude + 0.002,
         name: "Banheiro 3",
         description: "Banheiro próximo ao ponto C",
       },
       {
+        id: "4",
         latitude: latitude - 0.004,
         longitude: longitude - 0.003,
         name: "Banheiro 4",
         description: "Banheiro próximo ao ponto D",
       },
       {
+        id: "5",
         latitude: latitude + 0.005,
         longitude: longitude + 0.004,
         name: "Banheiro 5",
@@ -129,7 +134,7 @@ const MapPage = () => {
         >
           {bathrooms.map((bathroom, index) => (
             <Marker
-              key={index}
+              key={bathroom.id}
               coordinate={{
                 latitude: bathroom.latitude,
                 longitude: bathroom.longitude,

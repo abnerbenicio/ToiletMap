@@ -1,10 +1,9 @@
 import { Text, View, Image, Alert, BackHandler } from "react-native";
 import { useEffect } from "react";
-import { useRouter } from "expo-router";
 import * as Location from "expo-location"; // Importação direta do módulo de localização
+import React from "react";
 
 export default function Index() {
-  const router = useRouter();
 
   useEffect(() => {
     const requestLocationPermission = async () => {
