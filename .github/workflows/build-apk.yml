@@ -1,4 +1,4 @@
-name: Build APK with EAS
+name: Build APK with EAS and SonarQube Analysis
 
 on:
   push:
@@ -6,78 +6,72 @@ on:
       - main
 
 jobs:
-  build:
-    name: Build APK using Expo EAS
+  sonar:
+    name: Quality Analysis with SonarQube
     runs-on: ubuntu-latest
 
     steps:
-      # Check out the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: SonarQube Scanner
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          npx sonar-scanner \
+            -Dsonar.projectKey=abnerbenicio_ToiletMap \
+            -Dsonar.organization=baixium \
+            -Dsonar.sources=src \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=$SONAR_TOKEN
+
+  build:
+    name: Build APK using Expo EAS
+    runs-on: ubuntu-latest
+    needs: sonar  # Depende da conclusão do job 'sonar'
+
+    steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # Instalar Node.js na versão 23.x
       - name: Install Node.js
         run: |
-          curl -fsSL https://deb.nodesource.com/setup_23.x | sudo -E bash - # Instalar a versão 23.x do Node.js
+          curl -fsSL https://deb.nodesource.com/setup_23.x | sudo -E bash -
           sudo apt-get install -y nodejs
 
-      # Verificar a versão instalada do Node.js (opcional)
       - name: Check Node.js Version
         run: node -v
 
-      # Instalar dependências (Instalando o EAS CLI globalmente)
       - name: Install Dependencies
         run: |
-          npm install -g eas-cli  # Instalar o eas-cli globalmente
-          npm install  # Instalar as dependências do projeto
+          npm install -g eas-cli
+          npm install
 
-      # Definir o token de autenticação como variável de ambiente
       - name: Set Expo Token
         env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}  # Usar o token de autenticação
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: |
-          echo "EXPO_TOKEN=$EXPO_TOKEN" >> $GITHUB_ENV  # Definir como variável de ambiente no GitHub Actions
+          echo "EXPO_TOKEN=$EXPO_TOKEN" >> $GITHUB_ENV
 
-      # Rodar o EAS Build
       - name: Run EAS Build
         run: eas build --platform android --profile preview --non-interactive
 
-      # Fazer upload do APK gerado como artefato no GitHub Actions
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: app-preview.apk
           path: dist/*
-
-sonar:
-  name: Quality Analysis
-  runs-on: ubuntu-latest
-  needs: test
-  steps:
-  - name: Checkout code
-    uses: actions/checkout@v3
-
-  - name: Set up Node.js
-    uses: actions/setup-node@v3
-    with:
-      node-version: '18'
-
-  - name: Install dependencies
-    run: npm install
-
-  - name: Set up Java 17
-    uses: actions/setup-java@v3
-    with:
-      distribution: 'temurin'
-      java-version: '17'
-
-  - name: SonarQube Scanner
-    env:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-    run: |
-        npx sonar-scanner \
-          -Dsonar.projectKey=abnerbenicio_ToiletMap \
-          -Dsonar.organization=baixium \
-          -Dsonar.sources=src \
-          -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.login=$SONAR_TOKEN
