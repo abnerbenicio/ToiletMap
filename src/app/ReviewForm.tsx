@@ -8,7 +8,7 @@ import {
   Alert,
 } from "react-native";
 import * as Location from "expo-location";
-import { FontAwesome } from "@expo/vector-icons"; // Importação correta para o Expo
+import { FontAwesome } from "@expo/vector-icons";
 
 const ReviewForm = () => {
   const [nome, setNome] = useState("");
@@ -37,7 +37,6 @@ const ReviewForm = () => {
       Alert.alert("Erro", "Por favor, preencha todos os campos.");
     } else {
       Alert.alert("Sucesso", "Sua avaliação foi enviada com sucesso!");
-      // Aqui você pode enviar os dados para um servidor ou salvar em um banco de dados
     }
   };
 
