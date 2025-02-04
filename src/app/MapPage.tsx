@@ -90,7 +90,7 @@ const MapPage = () => {
     if (!location) return;
 
     try {
-      // Constrói a URL para a API OSRM (Open Source Routing Machine)
+      //Uso de OSRM para traçar caminho
       const url = `https://router.project-osrm.org/route/v1/driving/${location.longitude},${location.latitude};${bathroom.longitude},${bathroom.latitude}?overview=full&geometries=geojson`;
 
       const response = await fetch(url);
