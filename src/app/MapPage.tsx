@@ -3,12 +3,14 @@ import { View, Text, StyleSheet, Alert, ActivityIndicator } from "react-native";
 import MapView, { Marker, Polyline, Region } from "react-native-maps";
 import * as Location from "expo-location";
 import { PROVIDER_GOOGLE } from "react-native-maps";
+import API from "../api/toilet-api";
 
 type Bathroom = {
   latitude: number;
   longitude: number;
   name: string;
-  description: string;
+  review: string;
+  rating: number;
 };
 
 const MapPage = () => {
@@ -43,43 +45,19 @@ const MapPage = () => {
     fetchLocationAndBathrooms();
   }, []);
 
-  const fetchBathrooms = (latitude: number, longitude: number) => {
-    // Simula dados de banheiros
-    const data: Bathroom[] = [
-      {
-        latitude: latitude + 0.001,
-        longitude: longitude + 0.001,
-        name: "Banheiro 1",
-        description: "Banheiro próximo ao ponto A",
-      },
-      {
-        latitude: latitude + 0.003,
-        longitude: longitude - 0.002,
-        name: "Banheiro 2",
-        description: "Banheiro próximo ao ponto B",
-      },
-      {
-        latitude: latitude - 0.002,
-        longitude: longitude + 0.002,
-        name: "Banheiro 3",
-        description: "Banheiro próximo ao ponto C",
-      },
-      {
-        latitude: latitude - 0.004,
-        longitude: longitude - 0.003,
-        name: "Banheiro 4",
-        description: "Banheiro próximo ao ponto D",
-      },
-      {
-        latitude: latitude + 0.005,
-        longitude: longitude + 0.004,
-        name: "Banheiro 5",
-        description: "Banheiro próximo ao ponto E",
-      },
-    ];
-    setBathrooms(data);
-    setLoading(false);
+  const fetchBathrooms = async (latitude: number, longitude: number) => {
+    try {
+      const res = await API.get("/banheiros/perto", {
+        params: { latitude, longitude},
+      });
+      setBathrooms(res.data);
+    } catch (e) {
+      Alert.alert("Erro", "Falha ao buscar banheiros.");
+    } finally {
+      setLoading(false);
+    }
   };
+  
 
   const handleMarkerPress = async (bathroom: Bathroom) => {
     if (!location) return;
@@ -135,7 +113,7 @@ const MapPage = () => {
                 longitude: bathroom.longitude,
               }}
               title={bathroom.name}
-              description={bathroom.description}
+              description={`${bathroom.review}\nNota:${bathroom.rating}`}
               onPress={() => handleMarkerPress(bathroom)}
             />
           ))}

@@ -8,14 +8,17 @@ import {
   Alert,
 } from "react-native";
 import * as Location from "expo-location";
-import { FontAwesome } from "@expo/vector-icons"; // Importação correta para o Expo
+import { FontAwesome } from "@expo/vector-icons";
+import API from "../api/toilet-api";
 
 const ReviewForm = () => {
   const [nome, setNome] = useState("");
   const [avaliacao, setAvaliacao] = useState(0);
-  const [acessibilidadeCadeirantes, setAcessibilidadeCadeirantes] = useState(false);
+  const [acessibilidadeCadeirantes, setAcessibilidadeCadeirantes] =
+    useState(false);
   const [comentario, setComentario] = useState("");
-  const [currentLocation, setCurrentLocation] = useState<Location.LocationObjectCoords | null>(null);
+  const [currentLocation, setCurrentLocation] =
+    useState<Location.LocationObjectCoords | null>(null);
 
   useEffect(() => {
     const getLocation = async () => {
@@ -32,13 +35,35 @@ const ReviewForm = () => {
     getLocation();
   }, []);
 
-  const handleSubmit = () => {
-    if (!nome || avaliacao === 0 || acessibilidadeCadeirantes === null || !comentario) {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
+    const toilet = {
+      latitude: currentLocation?.latitude,
+      longitude: currentLocation?.longitude,
+      name: nome,
+      rating: avaliacao,
+      review: comentario,
+      accessibility: acessibilidadeCadeirantes,
+    };
+
+    if (
+      !nome ||
+      avaliacao === 0 ||
+      acessibilidadeCadeirantes === null ||
+      !comentario
+    ) {
       Alert.alert("Erro", "Por favor, preencha todos os campos.");
     } else {
-      Alert.alert("Sucesso", "Sua avaliação foi enviada com sucesso!");
-      // Aqui você pode enviar os dados para um servidor ou salvar em um banco de dados
+      try {
+        await API.post("/post-banheiros", toilet);
+      } catch (e) {
+        alert(e);
+      }
     }
+
+    setNome("");
+    setAvaliacao(0);
+    setComentario("");
+    setAcessibilidadeCadeirantes(false);
   };
 
   return (
@@ -65,13 +90,22 @@ const ReviewForm = () => {
       </View>
 
       <Text>O banheiro possui acessibilidade para cadeirantes?</Text>
-      <View style={{ flexDirection: "row", marginBottom: 20, paddingTop: 20, gap: 20 }}>
+      <View
+        style={{
+          flexDirection: "row",
+          marginBottom: 20,
+          paddingTop: 20,
+          gap: 20,
+        }}
+      >
         <TouchableOpacity onPress={() => setAcessibilidadeCadeirantes(true)}>
           <View
             style={{
               width: 100,
               height: 35,
-              backgroundColor: acessibilidadeCadeirantes ? "#27f218" : "transparent",
+              backgroundColor: acessibilidadeCadeirantes
+                ? "#27f218"
+                : "transparent",
               borderRadius: 25,
               borderWidth: 2,
               borderColor: "#27f218",
@@ -79,7 +113,11 @@ const ReviewForm = () => {
               alignItems: "center",
             }}
           >
-            <Text style={{ color: acessibilidadeCadeirantes ? "#fff" : "#27f218" }}>Sim</Text>
+            <Text
+              style={{ color: acessibilidadeCadeirantes ? "#fff" : "#27f218" }}
+            >
+              Sim
+            </Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setAcessibilidadeCadeirantes(false)}>
@@ -87,7 +125,9 @@ const ReviewForm = () => {
             style={{
               width: 100,
               height: 35,
-              backgroundColor: !acessibilidadeCadeirantes ? "red" : "transparent",
+              backgroundColor: !acessibilidadeCadeirantes
+                ? "red"
+                : "transparent",
               borderRadius: 25,
               borderWidth: 2,
               borderColor: "red",
@@ -95,7 +135,11 @@ const ReviewForm = () => {
               alignItems: "center",
             }}
           >
-            <Text style={{ color: !acessibilidadeCadeirantes ? "#fff" : "red" }}>Não</Text>
+            <Text
+              style={{ color: !acessibilidadeCadeirantes ? "#fff" : "red" }}
+            >
+              Não
+            </Text>
           </View>
         </TouchableOpacity>
       </View>
