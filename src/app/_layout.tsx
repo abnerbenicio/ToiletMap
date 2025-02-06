@@ -1,5 +1,10 @@
 import { Tabs } from "expo-router";
 import { FontAwesome } from "@expo/vector-icons";
+import React from "react";
+
+const HomeTabIcon = () => <FontAwesome name="home" size={30} color="#fff" />;
+const MapTabIcon = () => <FontAwesome name="map" size={30} color="#fff" />;
+const ReviewTabIcon = () => <FontAwesome name="pencil" size={30} color="#fff" />;
 
 export default function RootLayout() {
   return (
@@ -29,9 +34,7 @@ export default function RootLayout() {
         options={{
           title: "Home",
           headerTitle: "ToiletMap",
-          tabBarIcon: ({}) => {
-            return <FontAwesome name="home" size={30} color="#fff" />;
-          },
+          tabBarIcon: HomeTabIcon,
         }}
       />
       <Tabs.Screen
@@ -39,9 +42,7 @@ export default function RootLayout() {
         options={{
           title: "Encontrar Banheiro",
           headerTitle: "ToiletMap",
-          tabBarIcon: ({}) => {
-            return <FontAwesome name="map" size={30} color="#fff" />;
-          },
+          tabBarIcon: MapTabIcon,
         }}
       />
       <Tabs.Screen
@@ -49,9 +50,7 @@ export default function RootLayout() {
         options={{
           title: "Avaliar",
           headerTitle: "ToiletMap",
-          tabBarIcon: ({}) => {
-            return <FontAwesome name="pencil" size={30} color="#fff" />;
-          },
+          tabBarIcon: ReviewTabIcon,
         }}
       />
     </Tabs>

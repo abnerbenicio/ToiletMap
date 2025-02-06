@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Alert, ActivityIndicator } from "react-native";
-import MapView, { Marker, Polyline, Region } from "react-native-maps";
+import MapView, { Marker, Polyline, Region, PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
-import { PROVIDER_GOOGLE } from "react-native-maps";
 import API from "../api/toilet-api";
 
 type Bathroom = {
+  id: string;
   latitude: number;
   longitude: number;
   name: string;
@@ -63,7 +63,7 @@ const MapPage = () => {
     if (!location) return;
 
     try {
-      // Constrói a URL para a API OSRM (Open Source Routing Machine)
+      //Uso de OSRM para traçar caminho
       const url = `https://router.project-osrm.org/route/v1/driving/${location.longitude},${location.latitude};${bathroom.longitude},${bathroom.latitude}?overview=full&geometries=geojson`;
 
       const response = await fetch(url);
@@ -107,7 +107,7 @@ const MapPage = () => {
         >
           {bathrooms.map((bathroom, index) => (
             <Marker
-              key={index}
+              key={bathroom.id}
               coordinate={{
                 latitude: bathroom.latitude,
                 longitude: bathroom.longitude,
