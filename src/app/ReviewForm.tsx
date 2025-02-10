@@ -54,7 +54,7 @@ const ReviewForm = () => {
       Alert.alert("Erro", "Por favor, preencha todos os campos.");
     } else {
       try {
-        await API.post("/post-banheiros", toilet);
+        await API.post("/banheiros/create", toilet);
       } catch (e) {
         alert(e);
       }
