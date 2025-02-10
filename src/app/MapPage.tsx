@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Alert, ActivityIndicator } from "react-native";
-import MapView, { Marker, Polyline, Region, PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, {
+  Marker,
+  Polyline,
+  Region,
+  PROVIDER_GOOGLE,
+} from "react-native-maps";
 import * as Location from "expo-location";
 import API from "../api/toilet-api";
+import FontAwesome from "@expo/vector-icons/build/FontAwesome";
 
 type Bathroom = {
   id: string;
@@ -16,7 +22,9 @@ type Bathroom = {
 const MapPage = () => {
   const [location, setLocation] = useState<Region | null>(null);
   const [bathrooms, setBathrooms] = useState<Bathroom[]>([]);
+  const [selectedBathroom, setSelectedBathroom] = useState<Bathroom>();
   const [loading, setLoading] = useState(true);
+  const [modal, setModal] = useState(false);
   const [routeCoordinates, setRouteCoordinates] = useState<
     { latitude: number; longitude: number }[]
   >([]);
@@ -48,7 +56,7 @@ const MapPage = () => {
   const fetchBathrooms = async (latitude: number, longitude: number) => {
     try {
       const res = await API.get("/banheiros/perto", {
-        params: { latitude, longitude},
+        params: { latitude, longitude },
       });
       setBathrooms(res.data);
     } catch (e) {
@@ -57,7 +65,6 @@ const MapPage = () => {
       setLoading(false);
     }
   };
-  
 
   const handleMarkerPress = async (bathroom: Bathroom) => {
     if (!location) return;
@@ -78,6 +85,8 @@ const MapPage = () => {
           })
         );
         setRouteCoordinates(coordinates);
+        setSelectedBathroom(bathroom);
+        setModal(true);
       } else {
         Alert.alert("Erro", "Não foi possível calcular a rota.");
       }
@@ -105,15 +114,13 @@ const MapPage = () => {
           showsMyLocationButton
           provider={PROVIDER_GOOGLE}
         >
-          {bathrooms.map((bathroom, index) => (
+          {bathrooms.map((bathroom) => (
             <Marker
               key={bathroom.id}
               coordinate={{
                 latitude: bathroom.latitude,
                 longitude: bathroom.longitude,
               }}
-              title={bathroom.name}
-              description={`${bathroom.review}\nNota:${bathroom.rating}`}
               onPress={() => handleMarkerPress(bathroom)}
             />
           ))}
@@ -129,6 +136,25 @@ const MapPage = () => {
       ) : (
         <Text>Obtendo localização...</Text>
       )}
+      {selectedBathroom?.rating !== undefined && (
+        <View style={styles.modal}>
+          <Text style={styles.textModal}>Nome: {selectedBathroom.name}</Text>
+          <Text style={styles.textModal}>
+            Descrição: {selectedBathroom.review}
+          </Text>
+          <View style={{ flexDirection: "row", gap: 5 }}>
+            <Text style={styles.textModal}>Nota:</Text>
+              {[1, 2, 3, 4, 5].map((star) => (
+                <FontAwesome
+                  key={star}
+                  name={star <= selectedBathroom.rating ? "star" : "star-o"}
+                  size={30}
+                  color="#FFD700"
+                />
+              ))}
+          </View>
+        </View>
+      )}
     </View>
   );
 };
@@ -138,6 +164,7 @@ export default MapPage;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "none"
   },
   map: {
     flex: 1,
@@ -146,5 +173,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  modal: {
+    position: "fixed",
+    bottom: 0,
+    flexDirection: "column",
+    height: 150,
+    gap: 10,
+    padding: 20,
+    backgroundColor: "white"
+  },
+  textModal: {
+    fontSize: 20,
   },
 });
