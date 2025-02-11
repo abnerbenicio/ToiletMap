@@ -153,25 +153,6 @@ const MapPage = () => {
           </View>
         </View>
       )}
-      {selectedBathroom?.rating !== undefined && (
-        <View style={styles.modal}>
-          <Text style={styles.textModal}>Nome: {selectedBathroom.name}</Text>
-          <Text style={styles.textModal}>
-            Descrição: {selectedBathroom.review}
-          </Text>
-          <View style={{ flexDirection: "row", gap: 5 }}>
-            <Text style={styles.textModal}>Nota:</Text>
-              {[1, 2, 3, 4, 5].map((star) => (
-                <FontAwesome
-                  key={star}
-                  name={star <= selectedBathroom.rating ? "star" : "star-o"}
-                  size={30}
-                  color="#FFD700"
-                />
-              ))}
-          </View>
-        </View>
-      )}
     </View>
   );
 };
