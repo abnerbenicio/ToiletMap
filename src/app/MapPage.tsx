@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { View, Text, StyleSheet, Alert, ActivityIndicator } from "react-native";
-import MapView, {
-  Marker,
-  Polyline,
-  Region,
-  PROVIDER_GOOGLE,
-} from "react-native-maps";
+import MapView, { Marker, Polyline, Region, PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
 import API from "../api/toilet-api";
 import FontAwesome from "@expo/vector-icons/build/FontAwesome";
+import { useFocusEffect } from "expo-router";
 
 type Bathroom = {
   id: string;
@@ -22,35 +18,27 @@ type Bathroom = {
 const MapPage = () => {
   const [location, setLocation] = useState<Region | null>(null);
   const [bathrooms, setBathrooms] = useState<Bathroom[]>([]);
-  const [selectedBathroom, setSelectedBathroom] = useState<Bathroom>();
+  const [selectedBathroom, setSelectedBathroom] = useState<Bathroom | undefined>();
   const [loading, setLoading] = useState(true);
-  const [routeCoordinates, setRouteCoordinates] = useState<
-    { latitude: number; longitude: number }[]
-  >([]);
+  const [routeCoordinates, setRouteCoordinates] = useState<{ latitude: number; longitude: number }[]>([]);
 
-  useEffect(() => {
-    const fetchLocationAndBathrooms = async () => {
-      try {
-        const userLocation = await Location.getCurrentPositionAsync({});
-        setLocation({
-          latitude: userLocation.coords.latitude,
-          longitude: userLocation.coords.longitude,
-          latitudeDelta: 0.05,
-          longitudeDelta: 0.05,
-        });
+  const fetchLocationAndBathrooms = async () => {
+    setLoading(true);
+    try {
+      const userLocation = await Location.getCurrentPositionAsync({});
+      setLocation({
+        latitude: userLocation.coords.latitude,
+        longitude: userLocation.coords.longitude,
+        latitudeDelta: 0.05,
+        longitudeDelta: 0.05,
+      });
 
-        fetchBathrooms(
-          userLocation.coords.latitude,
-          userLocation.coords.longitude
-        );
-      } catch (error) {
-        Alert.alert("Erro", "Não foi possível obter a localização.");
-        setLoading(false);
-      }
-    };
-
-    fetchLocationAndBathrooms();
-  }, []);
+      await fetchBathrooms(userLocation.coords.latitude, userLocation.coords.longitude);
+    } catch (error) {
+      Alert.alert("Erro", "Não foi possível obter a localização.");
+      setLoading(false);
+    }
+  };
 
   const fetchBathrooms = async (latitude: number, longitude: number) => {
     try {
@@ -65,18 +53,23 @@ const MapPage = () => {
     }
   };
 
+  useFocusEffect(
+    useCallback(() => {
+      fetchLocationAndBathrooms();
+    }, [])
+  );
+
   const handleMarkerPress = async (bathroom: Bathroom) => {
     if (!location) return;
 
     try {
-      //Uso de OSRM para traçar caminho
+      // Uso de OSRM para traçar caminho
       const url = `https://router.project-osrm.org/route/v1/driving/${location.longitude},${location.latitude};${bathroom.longitude},${bathroom.latitude}?overview=full&geometries=geojson`;
 
       const response = await fetch(url);
       const data = await response.json();
 
       if (data.routes && data.routes.length > 0) {
-        // Extrai as coordenadas do caminho
         const coordinates = data.routes[0].geometry.coordinates.map(
           (coord: [number, number]) => ({
             latitude: coord[1],
@@ -124,11 +117,7 @@ const MapPage = () => {
           ))}
 
           {routeCoordinates.length > 0 && (
-            <Polyline
-              coordinates={routeCoordinates}
-              strokeColor="#00f"
-              strokeWidth={4}
-            />
+            <Polyline coordinates={routeCoordinates} strokeColor="#00f" strokeWidth={4} />
           )}
         </MapView>
       ) : (
@@ -137,19 +126,17 @@ const MapPage = () => {
       {selectedBathroom?.rating !== undefined && (
         <View style={styles.modal}>
           <Text style={styles.textModal}>Nome: {selectedBathroom.name}</Text>
-          <Text style={styles.textModal}>
-            Descrição: {selectedBathroom.review}
-          </Text>
+          <Text style={styles.textModal}>Descrição: {selectedBathroom.review}</Text>
           <View style={{ flexDirection: "row", gap: 5 }}>
             <Text style={styles.textModal}>Nota:</Text>
-              {[1, 2, 3, 4, 5].map((star) => (
-                <FontAwesome
-                  key={star}
-                  name={star <= selectedBathroom.rating ? "star" : "star-o"}
-                  size={30}
-                  color="#FFD700"
-                />
-              ))}
+            {[1, 2, 3, 4, 5].map((star) => (
+              <FontAwesome
+                key={star}
+                name={star <= selectedBathroom.rating ? "star" : "star-o"}
+                size={30}
+                color="#FFD700"
+              />
+            ))}
           </View>
         </View>
       )}
@@ -172,13 +159,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modal: {
-    position: "fixed",
+    position: "absolute",
     bottom: 0,
+    width: "100%",
     flexDirection: "column",
     height: 150,
     gap: 10,
     padding: 20,
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   textModal: {
     fontSize: 20,
