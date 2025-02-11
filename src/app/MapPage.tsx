@@ -23,9 +23,7 @@ const MapPage = () => {
   const [location, setLocation] = useState<Region | null>(null);
   const [bathrooms, setBathrooms] = useState<Bathroom[]>([]);
   const [selectedBathroom, setSelectedBathroom] = useState<Bathroom>();
-  const [selectedBathroom, setSelectedBathroom] = useState<Bathroom>();
   const [loading, setLoading] = useState(true);
-  const [modal, setModal] = useState(false);
   const [routeCoordinates, setRouteCoordinates] = useState<
     { latitude: number; longitude: number }[]
   >([]);
@@ -191,18 +189,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-  },
-  modal: {
-    position: "fixed",
-    bottom: 0,
-    flexDirection: "column",
-    height: 150,
-    gap: 10,
-    padding: 20,
-    backgroundColor: "white"
-  },
-  textModal: {
-    fontSize: 20,
   },
   modal: {
     position: "fixed",
