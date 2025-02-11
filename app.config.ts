@@ -15,7 +15,7 @@ export default {
       backgroundColor: '#ffffff',
     },
     ios: {
-      supportsTablet: true,
+      supportsTablet: true, // Suporte a tablets no iOS (já é padrão no Expo)
     },
     android: {
       adaptiveIcon: {
@@ -26,12 +26,13 @@ export default {
       permissions: [
         'ACCESS_FINE_LOCATION',
         'ACCESS_COARSE_LOCATION',
+        'INTERNET', // Permissão de internet (já é padrão no Expo)
       ],
+      usesCleartextTraffic: true, // Permitir conexões HTTP no Android
       config: {
         googleMaps: {
           apiKey: process.env.GOOGLE_MAPS_API_KEY,
         },
-        cleartextTraffic: true, // Permitir conexões HTTP no Android
       },
     },
     web: {
@@ -62,6 +63,7 @@ export default {
       eas: {
         projectId: '09f90c97-601b-4b7f-b522-c9911a549857',
       },
+      googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY, // Adiciona a chave como extra
     },
   },
 };
