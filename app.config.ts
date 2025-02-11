@@ -28,7 +28,6 @@ export default {
         'ACCESS_COARSE_LOCATION',
         'INTERNET', // Permissão de internet (já é padrão no Expo)
       ],
-      usesCleartextTraffic: true, // Permitir conexões HTTP no Android
       config: {
         googleMaps: {
           apiKey: process.env.GOOGLE_MAPS_API_KEY,
@@ -41,6 +40,11 @@ export default {
       favicon: './assets/images/favicon.png',
     },
     plugins: [
+      ["expo-build-properties", {
+        "android": {
+          "usesCleartextTraffic": true
+        }
+      }],
       'expo-router',
       'expo-font',
       [

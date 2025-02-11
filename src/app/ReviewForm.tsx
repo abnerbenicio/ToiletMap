@@ -63,6 +63,7 @@ const ReviewForm = () => {
       });
 
       if (!response.ok) {
+        Alert.alert("Erro", "Falha ao avaliar banheiro");
         throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
       }
 
