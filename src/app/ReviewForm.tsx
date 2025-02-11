@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import * as Location from "expo-location";
 import { FontAwesome } from "@expo/vector-icons";
-import API from "../api/toilet-api";
+//import API from "../api/toilet-api";
 
 const ReviewForm = () => {
   const [nome, setNome] = useState("");
@@ -36,35 +36,48 @@ const ReviewForm = () => {
   }, []);
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
-    const toilet = {
-      latitude: currentLocation?.latitude,
-      longitude: currentLocation?.longitude,
-      name: nome,
-      rating: avaliacao,
-      review: comentario,
-      accessibility: acessibilidadeCadeirantes,
-    };
-
-    if (
-      !nome ||
-      avaliacao === 0 ||
-      acessibilidadeCadeirantes === null ||
-      !comentario
-    ) {
-      Alert.alert("Erro", "Por favor, preencha todos os campos.");
-    } else {
-      try {
-        await API.post("/banheiros/create", toilet);
-      } catch (e) {
-        alert(e);
-      }
-    }
-
-    setNome("");
-    setAvaliacao(0);
-    setComentario("");
-    setAcessibilidadeCadeirantes(false);
+  const toilet = {
+    latitude: currentLocation?.latitude,
+    longitude: currentLocation?.longitude,
+    name: nome,
+    rating: avaliacao,
+    review: comentario,
+    accessibility: acessibilidadeCadeirantes,
   };
+
+  if (
+    !nome ||
+    avaliacao === 0 ||
+    acessibilidadeCadeirantes === null ||
+    !comentario
+  ) {
+    Alert.alert("Erro", "Por favor, preencha todos os campos.");
+  } else {
+    try {
+      const response = await fetch('http://52.201.120.187:8000/api/v1/banheiros/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(toilet),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log("Resposta da API:", data);
+    } catch (error) {
+      console.error("Erro completo:", error);
+    }
+  }
+
+  setNome("");
+  setAvaliacao(0);
+  setComentario("");
+  setAcessibilidadeCadeirantes(false);
+};
 
   return (
     <View style={{ padding: 20 }}>
