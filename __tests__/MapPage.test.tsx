@@ -28,3 +28,9 @@ describe("MapPage", () => {
   });
 
 });
+
+afterAll(() => {
+  jest.clearAllTimers();
+  jest.restoreAllMocks();
+});
+
