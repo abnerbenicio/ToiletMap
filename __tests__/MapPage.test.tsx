@@ -17,7 +17,7 @@ jest.mock("../src/api/toilet-api", () => ({
 describe("MapPage", () => {
   test("deve renderizar corretamente o componente", async () => {
     Location.getCurrentPositionAsync.mockResolvedValue({
-      coords: { latitude: -23.55052, longitude: -46.633308 },
+      coords: { latitude: -20.2724787, longitude: -40.2894821 },
     });
 
     API.get.mockResolvedValue({ data: [] });
