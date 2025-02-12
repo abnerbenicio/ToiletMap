@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Executar testes
-        run: npm test -- --ci --runInBand --no-cache --forceExit --covarage
+        run: npm test -- --ci --runInBand --no-cache --forceExit --coverage
 
       - name: Enviar cobertura para SonarCloud
         env:
