@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, waitFor } from "@testing-library/react-native";
+import { render, screen } from "@testing-library/react-native";
 import MapPage from "../src/app/MapPage";
 import * as Location from "expo-location";
 import API from "../src/api/toilet-api";
