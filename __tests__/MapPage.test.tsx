@@ -2,6 +2,14 @@ import { render, screen } from '@testing-library/react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import MapPage from '../src/app/MapPage';
 
+// Mock do React Navigation para evitar dependências de navegação real
+jest.mock('@react-navigation/native', () => ({
+  ...jest.requireActual('@react-navigation/native'),
+  useNavigation: () => ({
+    navigate: jest.fn(),
+  }),
+}));
+
 // Mock do expo-location para evitar chamadas reais de localização
 jest.mock('expo-location', () => ({
   getCurrentPositionAsync: jest.fn().mockResolvedValue({
@@ -15,16 +23,8 @@ const renderWithNavigation = (component: React.ReactElement) => {
 };
 
 describe('MapPage', () => {
-  it('deve exibir a tela de carregamento', () => {
-    renderWithNavigation(<MapPage />);
-    expect(screen.getByText('Carregando...')).toBeTruthy();
-  });
-
-  it('deve exibir a tela de carregamento enquanto busca a localização', () => {
+  it('deve exibir a tela de carregamento', async () => {
     renderWithNavigation(<MapPage />);
     expect(screen.getByText('Carregando...')).toBeTruthy();
   });
 });
-
-
-  
