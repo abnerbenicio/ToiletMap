@@ -13,7 +13,7 @@
   },
   "jest": {
     "preset": "jest-expo",
-    "setupFilesAfterEnv": ["@testing-library/jest-native/extend-expect"]
+    "setupFiles": ["<rootDir>/jest.setup.js"]
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",

@@ -1,30 +1,30 @@
-import { render, screen } from '@testing-library/react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import MapPage from '../src/app/MapPage';
+import React from "react";
+import { render, screen, waitFor } from "@testing-library/react-native";
+import MapPage from "../src/app/MapPage";
+import * as Location from "expo-location";
+import API from "../src/api/toilet-api";
 
-// Mock do expo-location para evitar chamadas reais de localização
-jest.mock('expo-location', () => ({
-  getCurrentPositionAsync: jest.fn().mockResolvedValue({
-    coords: { latitude: 37.78825, longitude: -122.4324 },
-  }),
+// Mock do expo-location
+jest.mock("expo-location", () => ({
+  getCurrentPositionAsync: jest.fn(),
 }));
 
-// Função auxiliar para renderizar o componente dentro do NavigationContainer
-const renderWithNavigation = (component: React.ReactElement) => {
-  return render(<NavigationContainer>{component}</NavigationContainer>);
-};
+// Mock da API
+jest.mock("../src/api/toilet-api", () => ({
+  get: jest.fn(),
+}));
 
-describe('MapPage', () => {
-  it('deve exibir a tela de carregamento', () => {
-    renderWithNavigation(<MapPage />);
-    expect(screen.getByText('Carregando...')).toBeTruthy();
+describe("MapPage", () => {
+  test("deve renderizar corretamente o componente", async () => {
+    Location.getCurrentPositionAsync.mockResolvedValue({
+      coords: { latitude: -23.55052, longitude: -46.633308 },
+    });
+
+    API.get.mockResolvedValue({ data: [] });
+
+    render(<MapPage />);
+
+    expect(await screen.findByText("Carregando...")).toBeTruthy();
   });
 
-  it('deve exibir a tela de carregamento enquanto busca a localização', () => {
-    renderWithNavigation(<MapPage />);
-    expect(screen.getByText('Carregando...')).toBeTruthy();
-  });
 });
-
-
-  
