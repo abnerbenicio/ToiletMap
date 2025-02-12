@@ -6,6 +6,23 @@ on:
       - main
 
 jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Executar testes
+        run: npm test -- --ci --runInBand --no-cache --forceExit
   sonar:
     name: Quality Analysis with SonarQube
     runs-on: ubuntu-latest
