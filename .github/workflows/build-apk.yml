@@ -22,7 +22,19 @@ jobs:
         run: npm install
 
       - name: Executar testes
-        run: npm test -- --ci --runInBand --no-cache --forceExit
+        run: npm test -- --ci --runInBand --no-cache --forceExit --covarage
+
+      - name: Enviar cobertura para SonarCloud
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          npx sonar-scanner \
+            -Dsonar.projectKey=abnerbenicio_ToiletMap \
+            -Dsonar.organization=baixium \
+            -Dsonar.sources=src \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=$SONAR_TOKEN \
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
   sonar:
     name: Quality Analysis with SonarQube
     runs-on: ubuntu-latest
