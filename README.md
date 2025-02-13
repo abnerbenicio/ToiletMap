@@ -61,6 +61,7 @@ O ToiletMap é um aplicativo colaborativo que permite aos usuários encontrar e 
 
    ```bash
    npm install
+   npm install expo
    ```
 
 2. Rodar a Aplicação
@@ -80,3 +81,4 @@ No terminal, você verá opções para:
 - <a href="https://docs.google.com/document/d/1KoodP2aLMj5Eqa80PaGcFQ0cO-Qmzx-W/edit?usp=sharing&ouid=101254861131254864524&rtpof=true&sd=true">Documentação 📖</a>
 - <a href="https://docs.google.com/spreadsheets/d/1xnMJiFN5WQCy3NvAvdmGhv9jmTkYpxGy/edit?usp=sharing&ouid=101254861131254864524&rtpof=true&sd=true">Backlog 🧮</a>
 - <a href="https://app.quant-ux.com/#/test.html?h=a2aa10abBr5a0XGDb2HvLDoouyK0uwTcihZjpj9lzzRGkkIcy87Ma8cRpZvG&ln=en">Protótipo 📱</a>
+- <a href="https://github.com/joaomrpimentel/backend-toiletmap">API 🖥️</a>
